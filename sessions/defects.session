@@ -1,0 +1,46 @@
+@doc fixtures/defects.resolver.json
+@build product
+
+# This session asks a synthetic document, fixtures/defects.resolver.json: a theme that declares dark before light,
+# and a group with $deprecated set to false. Each answer here was a defect the core review found. The core now gives
+# the answer the review asked for, and the history of this file holds the diff that proves it. The last answer is
+# not a defect: the document also has a token that two sources of one set both give a value.
+
+# Core review section 4, item 1. The product build's default mode is the combination of the declared defaults,
+# light here, not the first combination built.
+> system
+name: defects
+version: (none declared)
+modifier theme: dark, light (default light)
+modifiers as declared: theme
+modifiers in the order they win, the last winning: theme
+modes: dark, light
+default mode: light
+tokens in the default mode: 2
+— name, getDeclaredVersion, getModifiers, getModes, getDefaultMode, getAllPaths, load
+
+# The same item, seen through a value. With no mode asked, the light value answers.
+> value defects.surface.page
+{"colorSpace":"srgb","components":[1,1,1],"hex":"#ffffff"}
+— resolveValue
+
+# Core review section 4, item 3. A group attribute set to false reads false.
+> paths legacy $deprecated
+false
+— getGroupAttribute
+
+# Core review section 4, item 2. The model says a path may leave out the collection when there is one, and the core
+# accepts it.
+> value surface.page
+{"colorSpace":"srgb","components":[1,1,1],"hex":"#ffffff"}
+— resolveValue
+
+# Two sources of the set base give legacy.old a value, and the values differ. The standard allows it and the last
+# source wins. The core's load reports it, and check prints the report beside the collection's own rows.
+> check
+incomplete: (none)
+holes: (none)
+non-factorable: (none)
+collisions:
+  legacy.old in set base: defects.resolver.json, defects.legacy.tokens.json
+— check, load

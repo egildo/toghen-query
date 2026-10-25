@@ -1,0 +1,125 @@
+{
+  "version": "2025-11-01",
+  "name": "broken",
+  "description": "A synthetic document with what the document-wide check reports: a reference to no token, a composite overridden in part, and a token one context alone defines.",
+  "sets": {
+    "base": {
+      "sources": [
+        {
+          "card": {
+            "background": {
+              "$type": "color",
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [
+                  1,
+                  1,
+                  1
+                ],
+                "hex": "#ffffff"
+              }
+            },
+            "border": {
+              "$type": "color",
+              "$value": "{color.missing}"
+            },
+            "shadow": {
+              "$type": "shadow",
+              "$value": {
+                "color": {
+                  "colorSpace": "srgb",
+                  "components": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "hex": "#000000"
+                },
+                "offsetX": {
+                  "value": 0,
+                  "unit": "px"
+                },
+                "offsetY": {
+                  "value": 2,
+                  "unit": "px"
+                },
+                "blur": {
+                  "value": 4,
+                  "unit": "px"
+                },
+                "spread": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            },
+            "font": {
+              "$type": "fontFamily",
+              "$value": [
+                "Inter",
+                "system-ui"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "modifiers": {
+    "elevation": {
+      "default": "low",
+      "contexts": {
+        "low": [],
+        "high": [
+          {
+            "card": {
+              "shadow": {
+                "$value": {
+                  "blur": {
+                    "value": 12,
+                    "unit": "px"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "theme": {
+      "default": "light",
+      "contexts": {
+        "light": [],
+        "dark": [
+          {
+            "card": {
+              "glow": {
+                "$type": "color",
+                "$value": {
+                  "colorSpace": "srgb",
+                  "components": [
+                    0.2,
+                    0.4,
+                    1
+                  ],
+                  "hex": "#3366ff"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/base"
+    },
+    {
+      "$ref": "#/modifiers/elevation"
+    },
+    {
+      "$ref": "#/modifiers/theme"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "version": "2025-11-01",
+  "name": "defects",
+  "description": "A synthetic document for the behaviours the core review called defects, a modifier that declares its non-default context first and a group attribute set to false, and a token two sources of one set both give a value.",
+  "sets": {
+    "base": {
+      "sources": [
+        {
+          "surface": {
+            "$type": "color",
+            "page": {
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [
+                  1,
+                  1,
+                  1
+                ],
+                "hex": "#ffffff"
+              }
+            }
+          },
+          "legacy": {
+            "$deprecated": false,
+            "$type": "color",
+            "old": {
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [
+                  0.5,
+                  0.5,
+                  0.5
+                ],
+                "hex": "#808080"
+              }
+            }
+          }
+        },
+        {
+          "$ref": "defects.legacy.tokens.json"
+        }
+      ]
+    }
+  },
+  "modifiers": {
+    "theme": {
+      "default": "light",
+      "contexts": {
+        "dark": [
+          {
+            "surface": {
+              "page": {
+                "$value": {
+                  "colorSpace": "srgb",
+                  "components": [
+                    0.1,
+                    0.1,
+                    0.1
+                  ],
+                  "hex": "#1a1a1a"
+                }
+              }
+            }
+          }
+        ],
+        "light": []
+      }
+    }
+  },
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/base"
+    },
+    {
+      "$ref": "#/modifiers/theme"
+    }
+  ]
+}

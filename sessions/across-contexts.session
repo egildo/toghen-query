@@ -1,0 +1,17 @@
+# One token across contexts: the hover background.
+# One row for each mode the sum build made.
+> value button.hover.backgroundColor across
+light/regular  {"colorSpace":"srgb","components":[0.8784,0.9216,0.9882],"hex":"#e0ebfc"}
+dark/regular   {"colorSpace":"srgb","components":[0.149,0.2118,0.302],"hex":"#26364d"}
+light/compact  {"colorSpace":"srgb","components":[0.8784,0.9216,0.9882],"hex":"#e0ebfc"}
+— getModes, resolveValue
+
+# A combination the sum build did not make. The core refuses it and says how to ask for it.
+> value button.hover.backgroundColor theme=dark density=compact
+error: Mode 'theme=dark density=compact' was not built in collection 'ds'. Name it among the combinations when building, or build every combination with resolveAllToDesignSystem().
+— resolveValue
+
+# The same question, late bound: the value under the two contexts, built for no mode.
+> value button.hover.backgroundColor how theme=dark density=compact
+{"colorSpace":"srgb","components":[0.149,0.2118,0.302],"hex":"#26364d"}
+— valueAt

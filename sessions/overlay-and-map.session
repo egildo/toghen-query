@@ -1,0 +1,49 @@
+@doc @toghen/lib/example/ds.resolver.json
+
+# Two ways to theme the running example with a warm accent, asked one after the other. A run of source lines between
+# blocks loads again for the queries beneath it.
+
+# The base: the accent as the roles give it.
+> value surface.accent
+{"colorSpace":"srgb","components":[0.102,0.4,0.902],"hex":"#1a66e6"}
+— resolveValue
+
+@doc @toghen/lib/example/ds.warm.resolver.json
+
+# The overlay borrows the base's set and modifiers and adds a set of its own after the base. Its accent is warm.
+> value surface.accent
+{"colorSpace":"srgb","components":[0.902,0.4,0.102],"hex":"#e6661a"}
+— resolveValue
+
+# The overlay puts its set before the theme, so the dark theme still wins in dark.
+> value surface.accent across
+light/regular  {"colorSpace":"srgb","components":[0.902,0.4,0.102],"hex":"#e6661a"}
+dark/regular   {"colorSpace":"srgb","components":[0.3608,0.6078,1],"hex":"#5c9bff"}
+light/compact  {"colorSpace":"srgb","components":[0.902,0.4,0.102],"hex":"#e6661a"}
+— getModes, resolveValue
+
+@doc @toghen/lib/example/ds.resolver.json
+@overrides @toghen/lib/example/warm.overrides.json
+
+# The base again, read with a map that sends the roles file to its warm copy. The same document, another file read.
+> value surface.accent
+{"colorSpace":"srgb","components":[0.902,0.4,0.102],"hex":"#e6661a"}
+— resolveValue
+
+# The map's hash, its unused keys, and the one read it changed: the reference as written, the document holding it,
+# the file read instead.
+> system
+name: ds
+version: (none declared)
+modifier theme: light, dark (default light)
+modifier density: regular, compact (default regular)
+modifiers as declared: theme, density
+modifiers in the order they win, the last winning: theme, density
+modes: light/regular, dark/regular, light/compact
+default mode: light/regular
+tokens in the default mode: 29
+overrides hash: 5784d4a9943c490c
+overrides unused: (none)
+overridden:
+  roles.tokens.json in ds.resolver.json read from roles.warm.tokens.json
+— name, getDeclaredVersion, getModifiers, getModes, getDefaultMode, getAllPaths, load

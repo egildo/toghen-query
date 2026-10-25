@@ -1,0 +1,55 @@
+# The parts of a component.
+# What lies under the button: its own tokens, a plain subgroup, and its part groups.
+> paths button
+token  button.backgroundColor
+token  button.color
+token  button.paddingBlock
+token  button.borderRadius
+token  button.font
+group  button.icon
+group  button.primary
+group  button.hover
+group  button.pressed
+group  button.disabled
+group  button.selected
+— childrenOf
+
+# The vocabulary the field sees: the root's, with the field's own spelling of disabled.
+> parts field vocabulary
+variant
+  primary  [data-variant='primary']
+state
+  hover     :hover
+  pressed   :active
+  disabled  :has(> input:disabled)
+selection
+  selected  [aria-pressed='true']
+— vocabularyAt
+
+# A path through two parts: its twin along each axis, the path at rest, and the component.
+> parts button.selected.hover.backgroundColor
+part  button.selected        selected (selection)  [aria-pressed='true']
+part  button.selected.hover  hover (state)         :hover
+twin along selection: button.hover.backgroundColor
+twin along state: button.selected.backgroundColor
+rest: button.backgroundColor
+component: button
+— partsOf
+
+# The axes the button varies along, and the values it uses, in precedence order.
+> parts button axes
+variant: primary
+state: hover, pressed, disabled
+selection: selected
+— axesOf
+
+# A group that is a part, of which axis and value.
+> parts button.selected group
+selected (selection)  [aria-pressed='true']
+twin: button
+— partAt
+
+# Two values of one axis in one path. The core refuses it, and the answer is its error as it gives it.
+> parts button.hover.pressed.backgroundColor
+error: Path 'button.hover.pressed.backgroundColor' nests two parts of axis 'state': 'hover' and 'pressed'. Give the group "com.toghen": { "css": { "parts": false } }, or rename a key.
+— partsOf

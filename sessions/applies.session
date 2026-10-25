@@ -1,0 +1,19 @@
+# Precedence under a selection: which token supplies each key of a component.
+# The background has two candidates with one part each. The later axis wins, and the state axes come after the
+# variant, so the hover background applies, whatever the order of the keys in the document.
+> applies button variant=primary state=hover
+backgroundColor  button.hover.backgroundColor
+color            button.primary.color
+paddingBlock     button.paddingBlock
+borderRadius     button.borderRadius
+font             button.font
+— applies
+
+# With nothing selected, the component's own tokens. A token in a plain subgroup (the icon's colour) is not a key.
+> applies button
+backgroundColor  button.backgroundColor
+color            button.color
+paddingBlock     button.paddingBlock
+borderRadius     button.borderRadius
+font             button.font
+— applies

@@ -1,0 +1,48 @@
+# Where a value comes from: the button's background, asked four ways.
+# The value, with every reference followed.
+> value button.backgroundColor
+{"colorSpace":"srgb","components":[1,1,1],"hex":"#ffffff"}
+— resolveValue
+
+# What the token writes, before anything is followed.
+> refs button.backgroundColor
+(whole value) -> ds.surface.raised
+— referencesOf
+
+# The token it points at, and what each context of the theme says about that token.
+# A context that defines nothing carries the base, and says so.
+> value surface.raised how
+surface.raised
+  $value
+    link theme at surface.raised
+      light: {"colorSpace":"srgb","components":[1,1,1],"hex":"#ffffff"} (the base)
+      dark: {"colorSpace":"srgb","components":[0.1686,0.1686,0.1686],"hex":"#2b2b2b"}
+    base: {"colorSpace":"srgb","components":[1,1,1],"hex":"#ffffff"}
+    holes: (none)
+  $description
+    (no links)
+    base: Cards, menus and the face of a control: one step above the page.
+    holes: (none)
+  generated: (none)
+  non-factorable: (none)
+— contextsOf
+
+# Which modifiers the button's background depends on: none of its own, one through its reference.
+> refs button.backgroundColor depends
+direct: (none)
+through: theme
+— dependsOn
+
+# Its type, and the names the two adapters give it in CSS: the token's property, and the property of its link for
+# the theme, the modifier written as the document names it.
+> type button.backgroundColor
+color
+— resolveToken
+
+> css ds.button.backgroundColor
+--button-background-color
+— cssPropertyName
+
+> css --surface-raised theme
+--surface-raised--theme
+— cssLinkName

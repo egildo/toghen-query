@@ -1,0 +1,21 @@
+@doc fixtures/broken.resolver.json
+
+# This session asks a synthetic document, fixtures/broken.resolver.json: a reference to no token, a shadow whose blur
+# one context overrides alone, and a token one context defines and the defaults do not.
+
+# Everything wrong with the document, in one call.
+> check
+incomplete:
+  card.glow: no value in low/light, high/light
+holes:
+  card.glow $value: theme=light
+  card.glow $type: theme=light
+non-factorable:
+  card.shadow $value: $value of "card.shadow" is overridden in part: an object merged onto the object beneath it differs from the incoming object alone.
+collisions: (none)
+— check, load
+
+# The reference to no token, asked for its value: the core's error names the reference.
+> value card.border
+error: Unresolvable reference {color.missing} in token "broken.card.border" at $value (mode "low/light"): no token at path "color.missing" in collection "broken".
+— resolveValue
