@@ -82,7 +82,7 @@ A word after the path that no form has is a usage error, which prints the comman
 
 ## Printing
 
-A command's printer turns what the core returned into lines of text. It decides nothing. A value is one line of JSON when it is short, and indented lines when it is not. A list is one item a line, or `(none)`. An error prints its message as the core gave it, after `error: `. The order is the order the core gives, so an answer is the same every time. No printer emits a blank line, because a session reads a blank line as the gap between two answers.
+A command's printer turns what the core returned into lines of text. It decides nothing. A value is one line of JSON when it is short, and indented lines when it is not. A string is printed as it is, unless a session would misread it: when it is blank, holds a line break, or starts with `#` or `>`, it is printed as JSON, on one line. A list is one item a line, or `(none)`. An error prints its message as the core gave it, after `error: `. The order is the order the core gives, so an answer is the same every time. No printer emits a blank line, because a session reads a blank line as the gap between two answers.
 
 Every answer ends with a line `— <export>`, the export the form called. A usage error has no such line, because no export gave it.
 
@@ -121,6 +121,7 @@ A session is the spec, and its answers are the golden files.
 - The `defects` session asks the three behaviours the review called defects. It held the core's wrong answers until the fixes; the diff is the proof of each fix. The synthetic document it asks is in `sessions/fixtures/`.
 - The `a-broken-document` session asks a synthetic document with a reference to no token, a composite overridden in part and a token one context alone defines: the document-wide check, and the error of the dangling reference.
 - The `defects` session's fixture also has a token two sources of one set give a `$value`, so its `check` shows a collision.
+- The `strings` session asks a synthetic document whose descriptions hold a paragraph break, a line break, a first `#` or `>`, and nothing at all: each is printed as JSON, so the session still reads back.
 - The `overlay-and-map` session asks the running example three ways: the base, the overlay `ds.warm.resolver.json`, and the base read with `warm.overrides.json`. It is the one session that changes its source mid-way.
 
 The running example is in [toghen-lib/example](https://codeberg.org/Toghen/lib/src/branch/main/example/). The core cannot depend on this package, so the core keeps its own unit tests and its own example test.

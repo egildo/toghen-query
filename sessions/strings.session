@@ -1,0 +1,44 @@
+@doc fixtures/strings.resolver.json
+
+# This session asks a synthetic document, fixtures/strings.resolver.json, whose descriptions hold text a session
+# would misread if it were printed as it is. Such a string is printed as JSON, on one line, as a value that is not a
+# string always is.
+
+# A paragraph break. Printed as it is, it would be a blank line, which ends an answer.
+> paths card $description
+"First paragraph.\n\nSecond paragraph."
+— getGroupAttribute
+
+# A first line starting with # would be read as a comment.
+> paths note $description
+"# Notes"
+— getGroupAttribute
+
+# One starting with > would be read as a query.
+> paths note $deprecated
+"> Use card instead."
+— getGroupAttribute
+
+# An empty description would be a blank line.
+> paths plain $description
+""
+— getGroupAttribute
+
+# A string inside a longer answer is printed the same way: here, the base of a description over two lines.
+> value card.padding how
+card.padding
+  $value
+    (no links)
+    base: {"value":16,"unit":"px"}
+    holes: (none)
+  $type
+    (no links)
+    base: dimension
+    holes: (none)
+  $description
+    (no links)
+    base: "The space inside the card.\nThe same on every side."
+    holes: (none)
+  generated: (none)
+  non-factorable: (none)
+— contextsOf

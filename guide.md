@@ -89,6 +89,8 @@ error: Mode 'theme=sepia' …            the core's own error, then the export
 usage: value <path> [modifier=context …]   a word no form has: the command's forms, and no export
 ```
 
+A string is printed as it is, unless it would break a transcript: a string that is blank, holds a line break, or starts with `#` or `>` is printed as JSON, quoted, on one line (`"First paragraph.\n\nSecond paragraph."`).
+
 `--json` prints one line of JSON for each answer instead: `{"questions":[12,13],"export":"resolveToken","answer":"color"}`, or `{"questions":[8,11,…],"export":"resolveValue","error":"…"}`.
 
 The core answers every command. A question it cannot answer gets no command here until it can: the gap is filled in the core, and the package then asks.
@@ -172,6 +174,7 @@ The sessions that exist:
 | [applies](./sessions/applies.session) | Which token applies under a selection, and with none |
 | [defects](./sessions/defects.session) | Three behaviours the review called defects, with the answers the core gives since they were fixed, and a collision in the check |
 | [a-broken-document](./sessions/a-broken-document.session) | The document-wide check of a broken document, and the error of a reference to no token |
+| [strings](./sessions/strings.session) | Descriptions a transcript would misread if they were printed as they are, printed as JSON |
 | [overlay-and-map](./sessions/overlay-and-map.session) | The accent of a base, of an overlay in light and dark, and of the base read with a map; the map's hash and the read it changed |
 
 ## The commands

@@ -1,0 +1,50 @@
+{
+  "version": "2025-11-01",
+  "name": "strings",
+  "description": "A synthetic document whose descriptions a session would misread if they were printed as they are: a paragraph break, a line break, a first character # or >, and an empty description.",
+  "sets": {
+    "base": {
+      "sources": [
+        {
+          "card": {
+            "$description": "First paragraph.\n\nSecond paragraph.",
+            "padding": {
+              "$type": "dimension",
+              "$description": "The space inside the card.\nThe same on every side.",
+              "$value": {
+                "value": 16,
+                "unit": "px"
+              }
+            }
+          },
+          "note": {
+            "$description": "# Notes",
+            "$deprecated": "> Use card instead.",
+            "font": {
+              "$type": "fontFamily",
+              "$value": [
+                "Inter",
+                "system-ui"
+              ]
+            }
+          },
+          "plain": {
+            "$description": "",
+            "gap": {
+              "$type": "dimension",
+              "$value": {
+                "value": 8,
+                "unit": "px"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/base"
+    }
+  ]
+}
