@@ -11,6 +11,7 @@
     "build": "tsup src/main.ts --format esm --clean --external @toghen/lib",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "query": "tsx src/main.ts",
+    "prepare": "pnpm run build",
     "lint": "biome check .",
     "format": "biome check --write .",
     "check": "biome check . && pnpm typecheck && pnpm test && pnpm build && node scripts/check-purity.mjs"
