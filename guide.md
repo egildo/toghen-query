@@ -12,13 +12,13 @@ From npm, without a checkout:
 npx @toghen/query <arguments>
 ```
 
-Or from the repository root, after `pnpm install`:
+Or from a clone of this repository, after `pnpm install`:
 
 ```sh
-pnpm --filter @toghen/query build
+pnpm build
 ```
 
-The command is `toghen-query`. In the repository you can also run the source with `pnpm --filter @toghen/query query -- <arguments>`.
+The command is `toghen-query`, built to `dist/main.js`. In the repository you can also run the source with `pnpm query <arguments>`.
 
 ## Three ways in
 
@@ -35,7 +35,9 @@ toghen-query --doc node_modules/@toghen/lib/example/ds.resolver.json value butto
 — resolveValue
 ```
 
-It exits 0 for an answer and 1 for anything else: the core's `error:`, a usage error, a word no command has, and a `check` whose collection check lists anything, so `toghen-query --doc ds.resolver.json check` can stop a CI step on its own. `help` exits 0. Collisions do not fail `check`: `load` reports them as advice, the last source still winning. A step that should stop on them too reads the output for a `collisions:` line with entries beneath it. `--json` exits as the plain text does.
+The flags may stand before or after the query. From the query's first word on, a word starting `--` is the query's unless it is one of the flags below, so `toghen-query --doc ds.resolver.json css --surface-raised theme` asks for a link's custom property. After `--`, every word is the query's.
+
+It exits 0 for an answer and 1 for anything else: the core's `error:`, a usage error, a flag it does not know or one without its value (with the usage, on stderr), a word no command has, an `across` with a row the core threw for, and a `check` whose collection check lists anything, so `toghen-query --doc ds.resolver.json check` can stop a CI step on its own. `help` exits 0. Collisions do not fail `check`: `load` reports them as advice, the last source still winning. A step that should stop on them too reads the output for a `collisions:` line with entries beneath it. `--json` exits as the plain text does.
 
 **A prompt.** Give no query. The prompt is `query>`. It reads one query a line. Type `help` for the commands, and `exit` or press Ctrl-D to leave.
 
@@ -55,7 +57,7 @@ Input that is piped in works the same way, without the prompt text.
 **A session file, replayed.**
 
 ```sh
-toghen-query --session toghen-query/sessions/parts.session
+toghen-query --session sessions/parts.session
 ```
 
 It prints the transcript again with the answers the core gives now. The exit code is 0 when that equals the file, and 1 when it does not.
@@ -71,9 +73,9 @@ value button.hover.backgroundColor how theme=dark density=compact
 ```
 
 - The **question word** picks the command. There are nine, one for each of the core's questions. `help` lists every form.
-- The **path** goes to the core as typed. A reference path, the form written inside braces in a token file, is enough: the document has one collection, and the core puts its name in front. A lookup path, with the collection, works too.
+- The **path** goes to the core as typed. A reference path, the form written inside braces in a token file, is enough: the document has one collection, and the core puts its name in front. A lookup path, with the collection, works for `value`, `type` and `refs` only, not for their `how` and `depends` forms: the other forms read the collection's name as the path's first group and find nothing there, so an answer of `(none)` may mean the path was written with its collection. `css <lookup path>` is the other way round: it takes the first segment for the collection.
 - A **form word** after the path picks another way to ask: `across`, `how`, `depends`, `vocabulary`, `axes`, `group`, an attribute name starting `$`.
-- A **`modifier=context` pair** names a context. Where a form takes a mode, the pairs together name it: `theme=dark density=compact`. With `value … how`, they are the input of the late-bound value. With `applies`, an `axis=value` pair is the selection.
+- A **`modifier=context` pair** names a context. It splits at its first `=`: all that follows is the context's name, which the core checks. Where a form takes a mode, the pairs together name it: `theme=dark density=compact`. With `value … how`, they are the input of the late-bound value. With `applies`, an `axis=value` pair is the selection. A form that reads no pair, `system`, `across`, `depends`, `check` or `css`, refuses one as a usage error.
 
 ## What an answer looks like
 
@@ -89,6 +91,8 @@ error: Mode 'theme=sepia' …            the core's own error, then the export
 usage: value <path> [modifier=context …]   a word no form has: the command's forms, and no export
 ```
 
+A string is printed as it is, unless it would break a transcript: a string that is blank, holds a line break, or starts with `#` or `>` is printed as JSON, quoted, on one line (`"First paragraph.\n\nSecond paragraph."`).
+
 `--json` prints one line of JSON for each answer instead: `{"questions":[12,13],"export":"resolveToken","answer":"color"}`, or `{"questions":[8,11,…],"export":"resolveValue","error":"…"}`.
 
 The core answers every command. A question it cannot answer gets no command here until it can: the gap is filled in the core, and the package then asks.
@@ -102,7 +106,7 @@ The core answers every command. A question it cannot answer gets no command here
 | `--overrides <file>` | Reads an overrides map, a JSON object, and hands it to the core's `load` as it is. A key is a `$ref` as written in a document; its value is the file to read instead. The core resolves a relative value against the document that holds the reference, not against the folder you run the command in. See [Theme a system with a map](https://codeberg.org/Toghen/lib/src/branch/main/guide.md#theme-a-system-with-a-map). |
 | `--build <how>` | `sum` (the default): the defaults and each context alone. `product`: every combination. `modifier=context,…`: one combination, as a one-mode system. |
 | `--json` | One line of JSON for each answer. |
-| `--session <file>` | Replays a session file. |
+| `--session <file>` | Replays a session file. A query given with it is a usage error. |
 | `--help` | Prints the usage. |
 
 ## A session file
@@ -154,10 +158,10 @@ error: Path 'button.hover.pressed.backgroundColor' nests two parts of axis 'stat
 — partsOf
 ```
 
-`pnpm --filter @toghen/query test` replays every file under [sessions/](./sessions/) and compares each with its replay, line for line. To write a new session, write the queries and comments, then run:
+`pnpm test` replays every file under [sessions/](./sessions/) and compares each with its replay, line for line. To write a new session, write the queries and comments, then run:
 
 ```sh
-UPDATE_SESSIONS=1 pnpm --filter @toghen/query test
+UPDATE_SESSIONS=1 pnpm test
 ```
 
 The answers are filled in, and the diff shows what the core said. Read the diff. A change in an answer is a change in the core.
@@ -171,7 +175,8 @@ The sessions that exist:
 | [parts](./sessions/parts.session) | What lies under the button, the vocabulary of a group, a path's parts and twins, the button's axes, a group that is a part, and the error for two values of one axis |
 | [applies](./sessions/applies.session) | Which token applies under a selection, and with none |
 | [defects](./sessions/defects.session) | Three behaviours the review called defects, with the answers the core gives since they were fixed, and a collision in the check |
-| [a-broken-document](./sessions/a-broken-document.session) | The document-wide check of a broken document, and the error of a reference to no token |
+| [a-broken-document](./sessions/a-broken-document.session) | The document-wide check of a broken document, the error of a reference to no token, and a token one context alone defines, in every mode |
+| [strings](./sessions/strings.session) | Descriptions a transcript would misread if they were printed as they are, printed as JSON |
 | [overlay-and-map](./sessions/overlay-and-map.session) | The accent of a base, of an overlay in light and dark, and of the base read with a map; the map's hash and the read it changed |
 
 ## The commands
@@ -184,7 +189,7 @@ The sessions that exist:
 | `paths [group]` | What lies under a group, each marked token or group | `childrenOf` |
 | `paths <group> $attribute` | What a group declares | `getGroupAttribute` |
 | `value <path> [pairs]` | The value, or a member's | `resolveValue` |
-| `value <path> across` | One row per mode | `resolveValue`, for each mode of `getModes` |
+| `value <path> across` | One row per mode, with the core's error on a row it throws for | `resolveValue`, for each mode of `getModes` |
 | `value <path> how` | The chain: what each context says, and which definition applies | `contextsOf` |
 | `value <path> how <pairs>` | The value under contexts no build made, late bound | `valueAt` |
 | `type <path> [pairs]` | Its type | `resolveToken` |

@@ -35,7 +35,9 @@ export function ask(loaded: Loaded, line: string): Answer {
   if (!command) return { lines: [`unknown command '${word}'. Try help.`], kind: 'unknown' };
   const form = formOf(command, args);
   const usage = command.forms.map((f) => `usage: ${f.usage}`);
-  if (!form || (command.path && args.path === undefined)) return { command, lines: usage, kind: 'usage' };
+  if (!form || (command.path && args.path === undefined) || (form.pairs === false && args.pairs.length > 0)) {
+    return { command, lines: usage, kind: 'usage' };
+  }
   try {
     const data = form.run(loaded, args);
     return { command, form, lines: form.print(data, loaded), data, kind: 'answer' };

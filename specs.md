@@ -22,13 +22,15 @@ Three forms read more than one export. Each says so in its last line.
 
 - `system` prints the loaded document's plain getters side by side: the name, the declared version, the modifiers with their contexts and defaults, the modifiers' names in declared order and in the order they win in, the modes, the default mode, the number of paths. With a map, it adds what `load` returned about it.
 - `check` prints the collection's `check` and, beside it, the collisions `load` returned. The core's question set names `load` among the answerers of the `check` question.
-- `value <path> across` calls `resolveValue` once for each mode that `getModes` lists. It prints the rows and compares none. It is the one admitted bend: the core has no export for one token in every mode.
+- `value <path> across` calls `resolveValue` once for each mode that `getModes` lists. It prints the rows and compares none. It is the one admitted bend: the core has no export for one token in every mode. A mode the core throws for gets a row with the core's error, and the other rows still print. With `--json`, a row is `[mode, value]`, or `[mode, null, message]` for a mode the core threw for.
 
 ### Exit codes
 
-A one-shot query exits 0 for an answer and 1 for anything else: the core threw (`error:`), the line was a usage error, or its word is no command. `help` is answered as a usage and exits 0. A form may say that its answer is a failure, and only `check` does: 1 when the collection's `check` lists any `incomplete`, `holes` or `nonFactorable` entry. Collisions print beside them and do not fail, because `load` reports them as advice, the last source still winning ([lib's reference](https://codeberg.org/Toghen/lib/src/branch/main/reference.md)). The prompt exits 0, whatever it answered. A session exits by whether its replay equals the file, and a load that throws exits 2.
+A one-shot query exits 0 for an answer and 1 for anything else: the core threw (`error:`), the line was a usage error, or its word is no command. A command line the flags cannot be read from, a flag it does not know or one without its value, is a usage error too, and exits 1 with the usage. So is a query given with `--session`, which a session would not ask. `help` is answered as a usage and exits 0. A form may say that its answer is a failure, and two do. `check`: 1 when the collection's `check` lists any `incomplete`, `holes` or `nonFactorable` entry. `value … across`: 1 when the core threw for any mode, as a query the core threw for exits. Collisions print beside them and do not fail, because `load` reports them as advice, the last source still winning ([lib's reference](https://codeberg.org/Toghen/lib/src/branch/main/reference.md)). The prompt exits 0, whatever it answered. A session exits by whether its replay equals the file, and a load that throws exits 2.
 
 This computes no semantics. The code reads the kind of answer `ask` already sorts every answer into, and, for `check`, whether the lists the core calls "what is wrong with the collection's tokens" are empty. A session holds no exit code, so the codes are held by `test/ways-in.test.ts`, which runs the command as a process.
+
+The query's words are those from the first word that is not a flag on, except the command's own flags, which may follow the query. So a custom property, which starts `--`, is a word of a `css` query. A `name=value` pair, in a query or in `--build`, splits at its first `=`, and the core is handed the rest as written. Splitting the command line is parsing, as splitting the query line is.
 
 A path goes to the core as typed. The core's one-collection shorthand reads a path without its collection, so the package adds nothing to a path.
 
@@ -78,11 +80,11 @@ The table is in `src/commands.ts`, one entry for each command: the word, the que
 | `css` | `css <lookup path>` | `cssPropertyName` |
 | | `css <--property> <modifier>` | `cssLinkName` |
 
-A word after the path that no form has is a usage error, which prints the command's forms.
+A word after the path that no form has is a usage error, which prints the command's forms. So is a `name=value` pair given to a form that reads none: `system`, `value … across`, `refs … depends`, `check` and both forms of `css`.
 
 ## Printing
 
-A command's printer turns what the core returned into lines of text. It decides nothing. A value is one line of JSON when it is short, and indented lines when it is not. A list is one item a line, or `(none)`. An error prints its message as the core gave it, after `error: `. The order is the order the core gives, so an answer is the same every time. No printer emits a blank line, because a session reads a blank line as the gap between two answers.
+A command's printer turns what the core returned into lines of text. It decides nothing. A value is one line of JSON when it is short, and indented lines when it is not. A string is printed as it is, unless a session would misread it: when it is blank, holds a line break, or starts with `#` or `>`, it is printed as JSON, on one line. A list is one item a line, or `(none)`. An error prints its message as the core gave it, after `error: `. The order is the order the core gives, so an answer is the same every time. No printer emits a blank line, because a session reads a blank line as the gap between two answers.
 
 Every answer ends with a line `— <export>`, the export the form called. A usage error has no such line, because no export gave it.
 
@@ -119,8 +121,9 @@ A session is the spec, and its answers are the golden files.
 - `test/sessions.test.ts` replays every file under `sessions/` against the running example, or the documents its source lines name, and compares exactly. `UPDATE_SESSIONS=1` rewrites the answers in place, as the core's example test does with `UPDATE_EXAMPLE=1`.
 - The `applies` session holds the token that applies under a selection, as the core rules it. It held `missing: question 36` until the core answered, and the diff that changed it is the proof.
 - The `defects` session asks the three behaviours the review called defects. It held the core's wrong answers until the fixes; the diff is the proof of each fix. The synthetic document it asks is in `sessions/fixtures/`.
-- The `a-broken-document` session asks a synthetic document with a reference to no token, a composite overridden in part and a token one context alone defines: the document-wide check, and the error of the dangling reference.
+- The `a-broken-document` session asks a synthetic document with a reference to no token, a composite overridden in part and a token one context alone defines: the document-wide check, the error of the dangling reference, and the token one context defines, across every mode, with the core's error on the rows it throws for.
 - The `defects` session's fixture also has a token two sources of one set give a `$value`, so its `check` shows a collision.
+- The `strings` session asks a synthetic document whose descriptions hold a paragraph break, a line break, a first `#` or `>`, and nothing at all: each is printed as JSON, so the session still reads back.
 - The `overlay-and-map` session asks the running example three ways: the base, the overlay `ds.warm.resolver.json`, and the base read with `warm.overrides.json`. It is the one session that changes its source mid-way.
 
 The running example is in [toghen-lib/example](https://codeberg.org/Toghen/lib/src/branch/main/example/). The core cannot depend on this package, so the core keeps its own unit tests and its own example test.

@@ -35,8 +35,10 @@ export interface Form {
   run: (loaded: Loaded, args: Args) => unknown;
   /** The loaded state comes along for the folder that the paths `load` returns are printed relative to. */
   print: (answer: any, loaded: Loaded) => string[];
-  /** Whether the answer is the core saying something is wrong, which a one-shot query exits 1 for. Only `check` has one. */
+  /** Whether the answer is the core saying something is wrong, which a one-shot query exits 1 for: `check`, and `across`. */
   fails?: (answer: any) => boolean;
+  /** False for a form that reads no `name=value` pair, so a line with one is a usage error. */
+  pairs?: false;
 }
 
 export interface Command {
@@ -66,6 +68,7 @@ export const commands: Command[] = [
     forms: [
       {
         usage: 'system',
+        pairs: false,
         export: 'name, getDeclaredVersion, getModifiers, getModes, getDefaultMode, getAllPaths, load',
         run: ({ resolver, collection, load }) => ({
           name: resolver.name,
@@ -133,9 +136,25 @@ export const commands: Command[] = [
       {
         word: 'across',
         usage: 'value <path> across',
+        pairs: false,
         export: 'getModes, resolveValue',
-        run: ({ system, collection }, args) => collection.getModes().map((mode) => [mode, system.resolveValue(args.path!, mode)] as const),
-        print: (rows) => table(rows.map(([mode, value]: [string, unknown]) => [mode, JSON.stringify(value)])),
+        // A mode the core throws for gives a row with its error third, so the other modes still print.
+        run: ({ system, collection }, args) =>
+          collection.getModes().map((mode) => {
+            try {
+              return [mode, system.resolveValue(args.path!, mode)];
+            } catch (error) {
+              return [mode, undefined, messageOf(error).join(' ')];
+            }
+          }),
+        print: (rows) =>
+          table(
+            rows.map(([mode, value, error]: [string, unknown, string?]) => [
+              mode,
+              error === undefined ? JSON.stringify(value) : `error: ${error}`,
+            ]),
+          ),
+        fails: (rows) => rows.some((row: unknown[]) => row.length === 3),
       },
       {
         word: 'how',
@@ -198,6 +217,7 @@ export const commands: Command[] = [
       {
         word: 'depends',
         usage: 'refs <path> depends',
+        pairs: false,
         export: 'dependsOn',
         run: ({ resolver }, args) => resolver.dependsOn(args.path!),
         print: (a) => [`direct: ${listLine(a.direct)}`, `through: ${listLine(a.through)}`],
@@ -271,6 +291,7 @@ export const commands: Command[] = [
     forms: [
       {
         usage: 'check',
+        pairs: false,
         export: 'check, load',
         run: ({ collection, load }) => ({ ...collection.check(), collisions: load.collisions }),
         // The core's check lists what is wrong with the tokens; collisions are load's advisory report, and do not fail.
@@ -308,6 +329,7 @@ export const commands: Command[] = [
     forms: [
       {
         usage: 'css <lookup path>',
+        pairs: false,
         export: 'cssPropertyName',
         run: (_, args) => cssPropertyName(args.path!),
         print: (answer) => [answer],
@@ -315,6 +337,7 @@ export const commands: Command[] = [
       {
         word: '--',
         usage: 'css <--property> <modifier>',
+        pairs: false,
         export: 'cssLinkName',
         run: (_, args) => cssLinkName(args.path!, args.rest[0]),
         print: (answer) => [answer],

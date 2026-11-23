@@ -5,10 +5,13 @@
 
 const NOTHING = '(none)';
 
-/** One value on one line when it is short, else indented over several. */
+/** A string a session would not read back as one answer line: blank, over several lines, a comment or a query. */
+const misread = (text: string) => text.trim() === '' || text.includes('\n') || /^[#>]/.test(text);
+
+/** One value on one line when it is short, else indented over several. A string is itself, or JSON if it would be misread. */
 export function valueLines(value: unknown): string[] {
   if (value === undefined) return [NOTHING];
-  if (typeof value === 'string') return [value];
+  if (typeof value === 'string') return [misread(value) ? JSON.stringify(value) : value];
   const compact = JSON.stringify(value);
   return compact.length <= 100 ? [compact] : JSON.stringify(value, null, 2).split('\n');
 }

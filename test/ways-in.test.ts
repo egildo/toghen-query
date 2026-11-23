@@ -27,6 +27,17 @@ describe('the ways in', () => {
     assert.deepEqual(JSON.parse(stdout), { questions: [12, 13], export: 'resolveToken', answer: 'color' });
   });
 
+  it('one-shot: a custom property is a word of the query, not a flag', () => {
+    const { stdout, status } = run(['--doc', `${EXAMPLE}ds.resolver.json`, 'css', '--surface-raised', 'theme']);
+    assert.equal(status, 0);
+    assert.equal(stdout, '--surface-raised--theme\n— cssLinkName\n');
+  });
+
+  it('one-shot: a flag after the query is still a flag', () => {
+    const { stdout } = run(['--doc', `${EXAMPLE}ds.resolver.json`, 'type', 'button.backgroundColor', '--json']);
+    assert.deepEqual(JSON.parse(stdout), { questions: [12, 13], export: 'resolveToken', answer: 'color' });
+  });
+
   it('a word no form has prints the usage of the command, and no export', () => {
     const { stdout } = run(['--doc', `${EXAMPLE}ds.resolver.json`, 'value', 'button.backgroundColor', 'sideways']);
     assert.match(stdout, /^usage: value <path> \[modifier=context …\]\n/);
@@ -119,10 +130,34 @@ describe('the exit code of a one-shot query', () => {
     assert.equal(status, 1);
   });
 
+  it('1 for across when the core throws for any mode, every row still printed', () => {
+    const { stdout, status } = run([...fixture('broken.resolver.json'), 'value', 'card.glow', 'across']);
+    assert.match(stdout, /^low\/light +error: .*\nhigh\/light +error: .*\nlow\/dark +\{/);
+    assert.equal(status, 1);
+  });
+
   it('1 for a usage error, and for a word no command has', () => {
     assert.equal(run([...doc, 'value']).status, 1);
     assert.equal(run([...doc, 'value', 'button.backgroundColor', 'sideways']).status, 1);
     assert.equal(run([...doc, 'frobnicate']).status, 1);
+  });
+
+  it('1 for a flag the command does not know, or one without its value, with the usage', () => {
+    for (const args of [
+      ['--frobnicate', 'check'],
+      ['check', '--doc'],
+    ]) {
+      const { stderr, status } = run([...doc, ...args]);
+      assert.equal(status, 1);
+      assert.match(stderr, /^error: .*\nusage: toghen-query /);
+    }
+  });
+
+  it('1 for a query given with --session, which would not be asked', () => {
+    const { stdout, stderr, status } = run(['--session', `${SESSIONS}parts.session`, 'type', 'button.color']);
+    assert.equal(status, 1);
+    assert.equal(stdout, '');
+    assert.match(stderr, /^error: .*--session.*\nusage: toghen-query /);
   });
 
   it('0 for help, which is answered as a usage and is not one', () => {

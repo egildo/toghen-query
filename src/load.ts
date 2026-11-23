@@ -48,7 +48,7 @@ export async function loadSource({ doc, tokens, build = 'sum', overrides }: Sour
   return { resolver, system, collection: system.getCollection(name)!, load: result, folder: dirname([entry].flat()[0]) };
 }
 
-/** `['theme=dark', 'density=compact']` as `{ theme: 'dark', density: 'compact' }`. */
+/** `['theme=dark', 'density=compact']` as `{ theme: 'dark', density: 'compact' }`. A pair splits at its first `=`. */
 export function pairsOf(pairs: string[]): Record<string, string> {
-  return Object.fromEntries(pairs.map((pair) => pair.split('=') as [string, string]));
+  return Object.fromEntries(pairs.map((pair) => pair.split(/=(.*)/) as [string, string]));
 }
