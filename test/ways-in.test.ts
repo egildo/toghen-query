@@ -130,6 +130,12 @@ describe('the exit code of a one-shot query', () => {
     assert.equal(status, 1);
   });
 
+  it('1 for across when the core throws for any mode, every row still printed', () => {
+    const { stdout, status } = run([...fixture('broken.resolver.json'), 'value', 'card.glow', 'across']);
+    assert.match(stdout, /^low\/light +error: .*\nhigh\/light +error: .*\nlow\/dark +\{/);
+    assert.equal(status, 1);
+  });
+
   it('1 for a usage error, and for a word no command has', () => {
     assert.equal(run([...doc, 'value']).status, 1);
     assert.equal(run([...doc, 'value', 'button.backgroundColor', 'sideways']).status, 1);

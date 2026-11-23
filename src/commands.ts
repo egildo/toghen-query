@@ -35,7 +35,7 @@ export interface Form {
   run: (loaded: Loaded, args: Args) => unknown;
   /** The loaded state comes along for the folder that the paths `load` returns are printed relative to. */
   print: (answer: any, loaded: Loaded) => string[];
-  /** Whether the answer is the core saying something is wrong, which a one-shot query exits 1 for. Only `check` has one. */
+  /** Whether the answer is the core saying something is wrong, which a one-shot query exits 1 for: `check`, and `across`. */
   fails?: (answer: any) => boolean;
 }
 
@@ -134,8 +134,23 @@ export const commands: Command[] = [
         word: 'across',
         usage: 'value <path> across',
         export: 'getModes, resolveValue',
-        run: ({ system, collection }, args) => collection.getModes().map((mode) => [mode, system.resolveValue(args.path!, mode)] as const),
-        print: (rows) => table(rows.map(([mode, value]: [string, unknown]) => [mode, JSON.stringify(value)])),
+        // A mode the core throws for gives a row with its error third, so the other modes still print.
+        run: ({ system, collection }, args) =>
+          collection.getModes().map((mode) => {
+            try {
+              return [mode, system.resolveValue(args.path!, mode)];
+            } catch (error) {
+              return [mode, undefined, messageOf(error).join(' ')];
+            }
+          }),
+        print: (rows) =>
+          table(
+            rows.map(([mode, value, error]: [string, unknown, string?]) => [
+              mode,
+              error === undefined ? JSON.stringify(value) : `error: ${error}`,
+            ]),
+          ),
+        fails: (rows) => rows.some((row: unknown[]) => row.length === 3),
       },
       {
         word: 'how',

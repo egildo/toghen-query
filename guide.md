@@ -37,7 +37,7 @@ toghen-query --doc node_modules/@toghen/lib/example/ds.resolver.json value butto
 
 The flags may stand before or after the query. From the query's first word on, a word starting `--` is the query's unless it is one of the flags below, so `toghen-query --doc ds.resolver.json css --surface-raised theme` asks for a link's custom property. After `--`, every word is the query's.
 
-It exits 0 for an answer and 1 for anything else: the core's `error:`, a usage error, a flag it does not know or one without its value (with the usage, on stderr), a word no command has, and a `check` whose collection check lists anything, so `toghen-query --doc ds.resolver.json check` can stop a CI step on its own. `help` exits 0. Collisions do not fail `check`: `load` reports them as advice, the last source still winning. A step that should stop on them too reads the output for a `collisions:` line with entries beneath it. `--json` exits as the plain text does.
+It exits 0 for an answer and 1 for anything else: the core's `error:`, a usage error, a flag it does not know or one without its value (with the usage, on stderr), a word no command has, an `across` with a row the core threw for, and a `check` whose collection check lists anything, so `toghen-query --doc ds.resolver.json check` can stop a CI step on its own. `help` exits 0. Collisions do not fail `check`: `load` reports them as advice, the last source still winning. A step that should stop on them too reads the output for a `collisions:` line with entries beneath it. `--json` exits as the plain text does.
 
 **A prompt.** Give no query. The prompt is `query>`. It reads one query a line. Type `help` for the commands, and `exit` or press Ctrl-D to leave.
 
@@ -175,7 +175,7 @@ The sessions that exist:
 | [parts](./sessions/parts.session) | What lies under the button, the vocabulary of a group, a path's parts and twins, the button's axes, a group that is a part, and the error for two values of one axis |
 | [applies](./sessions/applies.session) | Which token applies under a selection, and with none |
 | [defects](./sessions/defects.session) | Three behaviours the review called defects, with the answers the core gives since they were fixed, and a collision in the check |
-| [a-broken-document](./sessions/a-broken-document.session) | The document-wide check of a broken document, and the error of a reference to no token |
+| [a-broken-document](./sessions/a-broken-document.session) | The document-wide check of a broken document, the error of a reference to no token, and a token one context alone defines, in every mode |
 | [strings](./sessions/strings.session) | Descriptions a transcript would misread if they were printed as they are, printed as JSON |
 | [overlay-and-map](./sessions/overlay-and-map.session) | The accent of a base, of an overlay in light and dark, and of the base read with a map; the map's hash and the read it changed |
 
@@ -189,7 +189,7 @@ The sessions that exist:
 | `paths [group]` | What lies under a group, each marked token or group | `childrenOf` |
 | `paths <group> $attribute` | What a group declares | `getGroupAttribute` |
 | `value <path> [pairs]` | The value, or a member's | `resolveValue` |
-| `value <path> across` | One row per mode | `resolveValue`, for each mode of `getModes` |
+| `value <path> across` | One row per mode, with the core's error on a row it throws for | `resolveValue`, for each mode of `getModes` |
 | `value <path> how` | The chain: what each context says, and which definition applies | `contextsOf` |
 | `value <path> how <pairs>` | The value under contexts no build made, late bound | `valueAt` |
 | `type <path> [pairs]` | Its type | `resolveToken` |
