@@ -153,6 +153,13 @@ describe('the exit code of a one-shot query', () => {
     }
   });
 
+  it('1 for a query given with --session, which would not be asked', () => {
+    const { stdout, stderr, status } = run(['--session', `${SESSIONS}parts.session`, 'type', 'button.color']);
+    assert.equal(status, 1);
+    assert.equal(stdout, '');
+    assert.match(stderr, /^error: .*--session.*\nusage: toghen-query /);
+  });
+
   it('0 for help, which is answered as a usage and is not one', () => {
     const { stdout, status } = run([...doc, 'help']);
     assert.match(stdout, /^value <path>/m);

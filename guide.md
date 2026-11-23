@@ -106,7 +106,7 @@ The core answers every command. A question it cannot answer gets no command here
 | `--overrides <file>` | Reads an overrides map, a JSON object, and hands it to the core's `load` as it is. A key is a `$ref` as written in a document; its value is the file to read instead. The core resolves a relative value against the document that holds the reference, not against the folder you run the command in. See [Theme a system with a map](https://codeberg.org/Toghen/lib/src/branch/main/guide.md#theme-a-system-with-a-map). |
 | `--build <how>` | `sum` (the default): the defaults and each context alone. `product`: every combination. `modifier=context,…`: one combination, as a one-mode system. |
 | `--json` | One line of JSON for each answer. |
-| `--session <file>` | Replays a session file. |
+| `--session <file>` | Replays a session file. A query given with it is a usage error. |
 | `--help` | Prints the usage. |
 
 ## A session file

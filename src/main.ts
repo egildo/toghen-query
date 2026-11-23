@@ -40,6 +40,7 @@ function argsOf(args: string[]) {
       .map((t) => t.index),
   );
   const { values } = parseArgs({ args: args.filter((_, i) => !words.has(i)), options: OPTIONS });
+  if (values.session && words.size) throw new Error('Give a query or --session <file>, not both: a session asks only its own queries.');
   return { values, positionals: args.filter((_, i) => words.has(i)) };
 }
 
