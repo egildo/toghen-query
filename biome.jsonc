@@ -23,12 +23,5 @@
       "suspicious": { "noExplicitAny": "off" }
     }
   },
-  "assist": { "enabled": true, "actions": { "source": { "organizeImports": "off" } } },
-  "overrides": [
-    // check-purity.mjs is a copy of house's script and stays identical to it. Its local `escape` helper shadows a global name, which is harmless here; rename it in house, then copy out.
-    {
-      "includes": ["scripts/check-purity.mjs"],
-      "linter": { "rules": { "suspicious": { "noShadowRestrictedNames": "off" } } }
-    }
-  ]
+  "assist": { "enabled": true, "actions": { "source": { "organizeImports": "off" } } }
 }
