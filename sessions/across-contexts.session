@@ -15,3 +15,10 @@ error: Mode 'theme=dark density=compact' was not built in collection 'ds'. Name 
 > value button.hover.backgroundColor how theme=dark density=compact
 {"colorSpace":"srgb","components":[0.149,0.2118,0.302],"hex":"#26364d"}
 — valueAt
+
+# across asks every mode, so a pair beside it names nothing it reads. It is a usage error, which prints the forms.
+> value button.hover.backgroundColor across theme=dark
+usage: value <path> [modifier=context …]
+usage: value <path> across
+usage: value <path> how
+usage: value <path> how modifier=context …

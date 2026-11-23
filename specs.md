@@ -80,7 +80,7 @@ The table is in `src/commands.ts`, one entry for each command: the word, the que
 | `css` | `css <lookup path>` | `cssPropertyName` |
 | | `css <--property> <modifier>` | `cssLinkName` |
 
-A word after the path that no form has is a usage error, which prints the command's forms.
+A word after the path that no form has is a usage error, which prints the command's forms. So is a `name=value` pair given to a form that reads none: `system`, `value … across`, `refs … depends`, `check` and both forms of `css`.
 
 ## Printing
 

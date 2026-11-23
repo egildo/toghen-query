@@ -75,7 +75,7 @@ value button.hover.backgroundColor how theme=dark density=compact
 - The **question word** picks the command. There are nine, one for each of the core's questions. `help` lists every form.
 - The **path** goes to the core as typed. A reference path, the form written inside braces in a token file, is enough: the document has one collection, and the core puts its name in front. A lookup path, with the collection, works too.
 - A **form word** after the path picks another way to ask: `across`, `how`, `depends`, `vocabulary`, `axes`, `group`, an attribute name starting `$`.
-- A **`modifier=context` pair** names a context. Where a form takes a mode, the pairs together name it: `theme=dark density=compact`. With `value … how`, they are the input of the late-bound value. With `applies`, an `axis=value` pair is the selection.
+- A **`modifier=context` pair** names a context. Where a form takes a mode, the pairs together name it: `theme=dark density=compact`. With `value … how`, they are the input of the late-bound value. With `applies`, an `axis=value` pair is the selection. A form that reads no pair, `system`, `across`, `depends`, `check` or `css`, refuses one as a usage error.
 
 ## What an answer looks like
 
