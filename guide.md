@@ -12,13 +12,13 @@ From npm, without a checkout:
 npx @toghen/query <arguments>
 ```
 
-Or from the repository root, after `pnpm install`:
+Or from a clone of this repository, after `pnpm install`:
 
 ```sh
-pnpm --filter @toghen/query build
+pnpm build
 ```
 
-The command is `toghen-query`. In the repository you can also run the source with `pnpm --filter @toghen/query query -- <arguments>`.
+The command is `toghen-query`, built to `dist/main.js`. In the repository you can also run the source with `pnpm query <arguments>`.
 
 ## Three ways in
 
@@ -57,7 +57,7 @@ Input that is piped in works the same way, without the prompt text.
 **A session file, replayed.**
 
 ```sh
-toghen-query --session toghen-query/sessions/parts.session
+toghen-query --session sessions/parts.session
 ```
 
 It prints the transcript again with the answers the core gives now. The exit code is 0 when that equals the file, and 1 when it does not.
@@ -73,7 +73,7 @@ value button.hover.backgroundColor how theme=dark density=compact
 ```
 
 - The **question word** picks the command. There are nine, one for each of the core's questions. `help` lists every form.
-- The **path** goes to the core as typed. A reference path, the form written inside braces in a token file, is enough: the document has one collection, and the core puts its name in front. A lookup path, with the collection, works too.
+- The **path** goes to the core as typed. A reference path, the form written inside braces in a token file, is enough: the document has one collection, and the core puts its name in front. A lookup path, with the collection, works for `value`, `type` and `refs` only, not for their `how` and `depends` forms: the other forms read the collection's name as the path's first group and find nothing there, so an answer of `(none)` may mean the path was written with its collection. `css <lookup path>` is the other way round: it takes the first segment for the collection.
 - A **form word** after the path picks another way to ask: `across`, `how`, `depends`, `vocabulary`, `axes`, `group`, an attribute name starting `$`.
 - A **`modifier=context` pair** names a context. It splits at its first `=`: all that follows is the context's name, which the core checks. Where a form takes a mode, the pairs together name it: `theme=dark density=compact`. With `value … how`, they are the input of the late-bound value. With `applies`, an `axis=value` pair is the selection. A form that reads no pair, `system`, `across`, `depends`, `check` or `css`, refuses one as a usage error.
 
@@ -158,10 +158,10 @@ error: Path 'button.hover.pressed.backgroundColor' nests two parts of axis 'stat
 — partsOf
 ```
 
-`pnpm --filter @toghen/query test` replays every file under [sessions/](./sessions/) and compares each with its replay, line for line. To write a new session, write the queries and comments, then run:
+`pnpm test` replays every file under [sessions/](./sessions/) and compares each with its replay, line for line. To write a new session, write the queries and comments, then run:
 
 ```sh
-UPDATE_SESSIONS=1 pnpm --filter @toghen/query test
+UPDATE_SESSIONS=1 pnpm test
 ```
 
 The answers are filled in, and the diff shows what the core said. Read the diff. A change in an answer is a change in the core.
