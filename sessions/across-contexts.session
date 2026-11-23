@@ -22,3 +22,9 @@ usage: value <path> [modifier=context …]
 usage: value <path> across
 usage: value <path> how
 usage: value <path> how modifier=context …
+
+# A pair splits at its first =, so the context is all that follows it, and a name the theme does not have is the
+# core's to refuse.
+> value button.hover.backgroundColor how theme=dark=x
+error: Input value "dark=x" for modifier "theme" is not a valid context. Allowed values: light, dark.
+— valueAt

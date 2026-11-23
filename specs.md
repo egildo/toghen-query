@@ -30,7 +30,7 @@ A one-shot query exits 0 for an answer and 1 for anything else: the core threw (
 
 This computes no semantics. The code reads the kind of answer `ask` already sorts every answer into, and, for `check`, whether the lists the core calls "what is wrong with the collection's tokens" are empty. A session holds no exit code, so the codes are held by `test/ways-in.test.ts`, which runs the command as a process.
 
-The query's words are those from the first word that is not a flag on, except the command's own flags, which may follow the query. So a custom property, which starts `--`, is a word of a `css` query. Splitting the command line is parsing, as splitting the query line is.
+The query's words are those from the first word that is not a flag on, except the command's own flags, which may follow the query. So a custom property, which starts `--`, is a word of a `css` query. A `name=value` pair, in a query or in `--build`, splits at its first `=`, and the core is handed the rest as written. Splitting the command line is parsing, as splitting the query line is.
 
 A path goes to the core as typed. The core's one-collection shorthand reads a path without its collection, so the package adds nothing to a path.
 
