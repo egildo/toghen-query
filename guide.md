@@ -35,7 +35,9 @@ toghen-query --doc node_modules/@toghen/lib/example/ds.resolver.json value butto
 — resolveValue
 ```
 
-It exits 0 for an answer and 1 for anything else: the core's `error:`, a usage error, a word no command has, and a `check` whose collection check lists anything, so `toghen-query --doc ds.resolver.json check` can stop a CI step on its own. `help` exits 0. Collisions do not fail `check`: `load` reports them as advice, the last source still winning. A step that should stop on them too reads the output for a `collisions:` line with entries beneath it. `--json` exits as the plain text does.
+The flags may stand before or after the query. From the query's first word on, a word starting `--` is the query's unless it is one of the flags below, so `toghen-query --doc ds.resolver.json css --surface-raised theme` asks for a link's custom property. After `--`, every word is the query's.
+
+It exits 0 for an answer and 1 for anything else: the core's `error:`, a usage error, a flag it does not know or one without its value (with the usage, on stderr), a word no command has, and a `check` whose collection check lists anything, so `toghen-query --doc ds.resolver.json check` can stop a CI step on its own. `help` exits 0. Collisions do not fail `check`: `load` reports them as advice, the last source still winning. A step that should stop on them too reads the output for a `collisions:` line with entries beneath it. `--json` exits as the plain text does.
 
 **A prompt.** Give no query. The prompt is `query>`. It reads one query a line. Type `help` for the commands, and `exit` or press Ctrl-D to leave.
 
