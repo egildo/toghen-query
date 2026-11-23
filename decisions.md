@@ -158,6 +158,50 @@ gained a `collisions` line and `load` in its last line, in `a-broken-document`, 
 
 **With it.** Biome lints and formats the code, `pnpm check` runs every gate, and speckit with the house preset runs the rounds. A session's path that starts with `@` names a file inside a package; see the entry *a session can name a file inside a package*, above.
 
+## Fixed: what the review of 23 November 2026 found (23 November 2026)
+
+**Status:** built; not released yet. Every existing session's answers are byte-identical.
+
+**Where it comes from.** The review is house's `.reference/plans/workspace/review-2026-11-23.md`, with the round's plan beside it.
+
+**Fixed:**
+
+- A string printed as a blank line, or as a line a session reads as a comment or a query.
+- `css <--property> <modifier>`, which could not run as a one-shot query, and a usage error that exited 2.
+- `value … across`, which lost every row when one mode threw.
+- Three silent cases, each now refused:
+  - a pair given to a form that reads none;
+  - a query given with `--session`;
+  - `a=b=c` split at its last `=`.
+- The guide's monorepo commands.
+- A missing `prepare` script and README.
+
+**What the build found:**
+
+- **The escape is JSON,** following the rule that a value which is not a string prints as JSON. A leading `>` and the empty string were added beyond the plan: `> …` is read back as a query, and `""` printed a blank line.
+- **Flags may follow the query.**
+  - A known flag is a flag wherever it stands. An unknown `--word` after the first query word belongs to the query.
+  - Rejected: options stopping at the first operand, as POSIX has it. It would break a flag added after the query, as `pnpm <script> --json` adds one.
+  - The cost: a custom property spelled like one of the seven flags needs `--` before it.
+- **`across` in `--json`.**
+  - A row is `[mode, value]`, or `[mode, null, message]` when the core threw.
+  - A one-shot query exits 1 when any row threw.
+- **The collection form of a path, measured.**
+
+  | Form | With the collection in the path |
+  |---|---|
+  | `value` (plain and `across`), `type`, plain `refs` | works |
+  | `how`, `depends` | the core says "No token" |
+  | `paths`, `parts`, `applies` | print `(none)` |
+
+**Noticed, not fixed:**
+
+- `value <path> how` cuts a long base to its first line.
+- Table cells print as they are.
+- Extra words after a form word are dropped.
+- `--json` with `--session` is ignored.
+- A repeated pair: the last one wins.
+
 ## Open questions
 
 - **Closed:** [a source may change mid-session](#built-a-map-a-source-mid-session-and-what-system-and-check-now-print-21-october-2026). Whether a session may carry more than one document. Today a session asks one, named in its header. A question that compares two documents would need two.
