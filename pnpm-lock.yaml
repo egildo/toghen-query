@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@toghen/lib':
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.0
+        version: 0.2.0
     devDependencies:
       '@biomejs/biome':
         specifier: 2.5.15
@@ -557,8 +557,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@toghen/lib@0.1.0':
-    resolution: {integrity: sha512-LO4qN1Le/LyB44k6AIxxOk/hGpjBI94P7xfU6nJpZgAJja4Md7MAB/Iic9SJvLHWzeN4eQG22l/BrizJ2/zPEg==}
+  '@toghen/lib@0.2.0':
+    resolution: {integrity: sha512-akdLt35beNwKkSLqe5K4L9A7awiaCRerrzMrvfeAacOJvkXLi6CctZutZ18S0/e/lr5nyApkJm98v36g1KKUIQ==}
     engines: {node: '>=24'}
 
   '@types/estree@1.0.9':
@@ -1069,7 +1069,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.65.0':
     optional: true
 
-  '@toghen/lib@0.1.0':
+  '@toghen/lib@0.2.0':
     dependencies:
       culori: 4.0.2
 

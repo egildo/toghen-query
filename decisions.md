@@ -160,7 +160,7 @@ gained a `collisions` line and `load` in its last line, in `a-broken-document`, 
 
 ## Fixed: what the review of 23 November 2026 found (23 November 2026)
 
-**Status:** built; not released yet. Every existing session's answers are byte-identical.
+**Status:** done, in 0.1.1. Every existing session's answers are byte-identical.
 
 **Where it comes from.** The review is house's `.reference/plans/workspace/review-2026-11-23.md`, with the round's plan beside it.
 
