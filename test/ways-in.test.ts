@@ -178,6 +178,13 @@ describe('the exit code of a one-shot query', () => {
     assert.equal(status, 0);
   });
 
+  it('2 for a document that does not load, with the reason Node gives and not its copy of the path', () => {
+    const { stderr, status } = run(['--doc', `${SESSIONS}fixtures/missing.resolver.json`, 'check']);
+    assert.equal(status, 2);
+    assert.match(stderr, /could not be read\. ENOENT: no such file or directory\n/);
+    assert.doesNotMatch(stderr, /, open '/);
+  });
+
   it('0 for the prompt, whatever it answered', () => {
     const { stdout, status } = run([...fixture('broken.resolver.json')], 'check\nvalue card.border\nfrobnicate\n');
     assert.match(stdout, /error: Unresolvable reference/);
