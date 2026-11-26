@@ -204,7 +204,7 @@ gained a `collisions` line and `load` in its last line, in `a-broken-document`, 
 
 ## Fixed and built: what the measurement of 25 November 2026 found (26 November 2026)
 
-**Status:** built; not released yet. Items 3 and 4 of the round, `css` through lib's new method and `check`'s `unresolvable`, wait for lib's release on npm.
+**Status:** done, in 0.1.2, on lib 0.2.1.
 
 **Where it comes from.** On 25 November 2026 the `toghen` skills were measured against the released tools (skills' `decisions.md`, *Measured*). The round's plan is house's `.reference/plans/workspace/plan-2026-11-25-measurement-fixes.md`, ruled "1b 2a 3a 4a 5a" on 26 November 2026.
 
@@ -215,6 +215,11 @@ gained a `collisions` line and `load` in its last line, in `a-broken-document`, 
 - **A read failure gives Node's reason without Node's copy of the path** (question 2a, which covers query's reader as figma's). lib's message already names the file.
 
 **What the build found.** The `[x …]` notation was chosen for the usage over parentheses, which the usage text uses nowhere else.
+
+**Ruled and built, once lib 0.2.1 was on npm:**
+
+- **`css <path>` asks the core** (question 4a): `cssPropertyNameOf`, one export, with the one-collection shorthand every other form takes. `css surface.page` answers `--surface-page`, and a path that names no token gets lib's error and exits 1. Before, `css` called the pure `cssPropertyName`, which drops the first segment whatever it is.
+- **`check` prints `unresolvable:`** (question 5a), between `same-css-name:` and `collisions:`, one line per token and mode, `<path> in <mode>: <reference> (<reason>)`, and fails on it. `a-broken-document.session`'s answer gains `card.border`'s reference to nothing in three modes: the session called its `check` everything wrong with the document, and left that out. A new session, `references-to-nothing`, holds a colour and a shadow member that refer to nothing, a two-token loop and a reference broken in one context only.
 
 ## Open questions
 
