@@ -1,6 +1,6 @@
 {
   "name": "@toghen/query",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A command line that asks the core of Toghen its questions and prints the answers",
   "type": "module",
   "bin": {

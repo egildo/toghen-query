@@ -223,7 +223,7 @@ gained a `collisions` line and `load` in its last line, in `a-broken-document`, 
 
 ## Fixed: the usage after a document that does not load (26 November 2026)
 
-**Status:** done on the branch `leftovers`, for 0.1.3.
+**Status:** done, in 0.1.3.
 
 **Where it comes from.** The skills were measured again on 26 November 2026 against 0.1.2 (skills' `decisions.md`, *Measured again*). The plan is house's `.reference/plans/workspace/plan-2026-11-26-leftovers.md`, ruled "1a 2a" the same day; neither question is this repository's.
 
