@@ -41,6 +41,7 @@ false
 incomplete: (none)
 holes: (none)
 non-factorable: (none)
+same-css-name: (none)
 collisions:
   legacy.old in set base: defects.resolver.json, defects.legacy.tokens.json
 — check, load

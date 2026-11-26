@@ -1,0 +1,14 @@
+@doc fixtures/same-css-name.resolver.json
+
+# This session asks a synthetic document, fixtures/same-css-name.resolver.json: two dimension tokens, space.a.b and
+# space.a-b, whose paths give one custom-property name.
+
+# The core's check lists the name, and the paths that give it in document order.
+> check
+incomplete: (none)
+holes: (none)
+non-factorable: (none)
+same-css-name:
+  --space-a-b: space.a.b, space.a-b
+collisions: (none)
+— check, load

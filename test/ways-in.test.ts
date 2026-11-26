@@ -120,6 +120,12 @@ describe('the exit code of a one-shot query', () => {
     assert.equal(status, 1);
   });
 
+  it('1 for a check that lists only two tokens with one custom-property name', () => {
+    const { stdout, status } = run([...fixture('same-css-name.resolver.json'), 'check']);
+    assert.match(stdout, /\nsame-css-name:\n {2}--space-a-b: space\.a\.b, space\.a-b\n/);
+    assert.equal(status, 1);
+  });
+
   it('1 for a check with --json, as for plain text', () => {
     assert.equal(run([...fixture('broken.resolver.json'), '--json', 'check']).status, 1);
   });

@@ -12,6 +12,7 @@ holes:
   card.glow $type: theme=light
 non-factorable:
   card.shadow $value: $value of "card.shadow" is overridden in part: an object merged onto the object beneath it differs from the incoming object alone.
+same-css-name: (none)
 collisions: (none)
 — check, load
 

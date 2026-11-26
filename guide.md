@@ -176,6 +176,7 @@ The sessions that exist:
 | [applies](./sessions/applies.session) | Which token applies under a selection, and with none |
 | [defects](./sessions/defects.session) | Three behaviours the review called defects, with the answers the core gives since they were fixed, and a collision in the check |
 | [a-broken-document](./sessions/a-broken-document.session) | The document-wide check of a broken document, the error of a reference to no token, and a token one context alone defines, in every mode |
+| [same-css-name](./sessions/same-css-name.session) | The document-wide check of two dimension tokens whose paths give one custom-property name |
 | [strings](./sessions/strings.session) | Descriptions a transcript would misread if they were printed as they are, printed as JSON |
 | [overlay-and-map](./sessions/overlay-and-map.session) | The accent of a base, of an overlay in light and dark, and of the base read with a map; the map's hash and the read it changed |
 
@@ -200,7 +201,7 @@ The sessions that exist:
 | `parts <group> axes` | The axes and values below it, in precedence order | `axesOf` |
 | `parts <group> group` | The part the group is | `partAt` |
 | `applies <component> [axis=value …]` | Which token supplies each key under a selection | `applies` |
-| `check` | Holes, non-factorable tokens, tokens incomplete in some mode, and the collisions `load` found | `check`, and `load` |
+| `check` | Holes, non-factorable tokens, tokens incomplete in some mode, tokens whose paths give one custom-property name, and the collisions `load` found | `check`, and `load` |
 | `css <lookup path>` | A token's custom property | `cssPropertyName` |
 | `css <--property> <modifier>` | A chain link's custom property | `cssLinkName` |
 
@@ -227,4 +228,4 @@ collisions:
 
 Paths of files are printed relative to the folder of the document loaded, or of the first token file.
 
-`check` lists collisions and does not fail on them: a one-shot `check` exits 1 for `incomplete`, `holes` or `non-factorable` entries only (*Three ways in*).
+`check` lists collisions and does not fail on them: a one-shot `check` exits 1 for `incomplete`, `holes`, `non-factorable` or `same-css-name` entries only (*Three ways in*).
