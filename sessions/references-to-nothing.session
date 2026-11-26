@@ -1,0 +1,30 @@
+@doc fixtures/references-to-nothing.resolver.json
+
+# This session asks a synthetic document, fixtures/references-to-nothing.resolver.json, whose only faults are
+# references that do not resolve: a colour referring to no token, a shadow whose colour refers to no token, two tokens
+# referring to each other, and an accent that refers to no token in the dark context only.
+
+# The core's check lists each token once for each mode it does not resolve in: the reference that failed, and why.
+# Each token on the loop is listed with the reference that closes the loop back to it.
+> check
+incomplete: (none)
+holes: (none)
+non-factorable: (none)
+same-css-name: (none)
+unresolvable:
+  color.accent in dark: {color.absent} (not-found)
+  color.text in light: {color.missing} (not-found)
+  color.text in dark: {color.missing} (not-found)
+  loop.a in light: {loop.a} (circular)
+  loop.a in dark: {loop.a} (circular)
+  loop.b in light: {loop.b} (circular)
+  loop.b in dark: {loop.b} (circular)
+  shadow.raised in light: {color.gone} (not-found)
+  shadow.raised in dark: {color.gone} (not-found)
+collisions: (none)
+— check, load
+
+# A path that names no token has no custom property: the core says so.
+> css color.missing
+error: Token 'color.missing' not found in collection 'nothing'.
+— cssPropertyNameOf

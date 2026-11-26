@@ -10,7 +10,7 @@
  */
 
 import { relative } from 'node:path';
-import { cssLinkName, cssPropertyName } from '@toghen/lib';
+import { cssLinkName } from '@toghen/lib';
 import type { Loaded } from './load.js';
 import { pairsOf } from './load.js';
 import { indent, linesOrNone, listLine, messageLines, table, valueLines } from './print.js';
@@ -295,9 +295,9 @@ export const commands: Command[] = [
         export: 'check, load',
         run: ({ collection, load }) => ({ ...collection.check(), collisions: load.collisions }),
         // The core's check lists what is wrong with the tokens; collisions are load's advisory report, and do not fail.
-        fails: ({ incomplete, holes, nonFactorable, sameCssName }) =>
-          incomplete.length + holes.length + nonFactorable.length + sameCssName.length > 0,
-        print: ({ incomplete, holes, nonFactorable, sameCssName, collisions }, { folder }) => [
+        fails: ({ incomplete, holes, nonFactorable, sameCssName, unresolvable }) =>
+          incomplete.length + holes.length + nonFactorable.length + sameCssName.length + unresolvable.length > 0,
+        print: ({ incomplete, holes, nonFactorable, sameCssName, unresolvable, collisions }, { folder }) => [
           `incomplete: ${incomplete.length ? '' : '(none)'}`.trimEnd(),
           ...incomplete.map((t: any) => `  ${t.path}: no value in ${t.missingModes.join(', ')}`),
           `holes: ${holes.length ? '' : '(none)'}`.trimEnd(),
@@ -315,6 +315,8 @@ export const commands: Command[] = [
           ...nonFactorable.map((n: any) => `  ${n.path} ${n.property}: ${n.detail}`),
           `same-css-name: ${sameCssName.length ? '' : '(none)'}`.trimEnd(),
           ...sameCssName.map((s: any) => `  ${s.name}: ${s.paths.join(', ')}`),
+          `unresolvable: ${unresolvable.length ? '' : '(none)'}`.trimEnd(),
+          ...unresolvable.map((u: any) => `  ${u.path} in ${u.mode}: ${u.reference} (${u.reason})`),
           `collisions: ${collisions.length ? '' : '(none)'}`.trimEnd(),
           ...collisions.map(
             (c: any) =>
@@ -331,10 +333,10 @@ export const commands: Command[] = [
     path: true,
     forms: [
       {
-        usage: 'css <lookup path>',
+        usage: 'css <path>',
         pairs: false,
-        export: 'cssPropertyName',
-        run: (_, args) => cssPropertyName(args.path!),
+        export: 'cssPropertyNameOf',
+        run: ({ system }, args) => system.cssPropertyNameOf(args.path!),
         print: (answer) => [answer],
       },
       {

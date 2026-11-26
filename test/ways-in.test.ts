@@ -27,6 +27,14 @@ describe('the ways in', () => {
     assert.deepEqual(JSON.parse(stdout), { questions: [12, 13], export: 'resolveToken', answer: 'color' });
   });
 
+  it('one-shot: css takes a path without its collection, as the core reads one', () => {
+    for (const path of ['button.backgroundColor', 'ds.button.backgroundColor']) {
+      const { stdout, status } = run(['--doc', `${EXAMPLE}ds.resolver.json`, 'css', path]);
+      assert.equal(status, 0);
+      assert.equal(stdout, '--button-background-color\n— cssPropertyNameOf\n');
+    }
+  });
+
   it('one-shot: a custom property is a word of the query, not a flag', () => {
     const { stdout, status } = run(['--doc', `${EXAMPLE}ds.resolver.json`, 'css', '--surface-raised', 'theme']);
     assert.equal(status, 0);
@@ -123,6 +131,18 @@ describe('the exit code of a one-shot query', () => {
   it('1 for a check that lists only two tokens with one custom-property name', () => {
     const { stdout, status } = run([...fixture('same-css-name.resolver.json'), 'check']);
     assert.match(stdout, /\nsame-css-name:\n {2}--space-a-b: space\.a\.b, space\.a-b\n/);
+    assert.equal(status, 1);
+  });
+
+  it('1 for a check that lists only references that do not resolve', () => {
+    const { stdout, status } = run([...fixture('references-to-nothing.resolver.json'), 'check']);
+    assert.match(stdout, /\nunresolvable:\n {2}color\.accent in dark: \{color\.absent\} \(not-found\)\n/);
+    assert.equal(status, 1);
+  });
+
+  it('1 for css of a path that names no token, with the core error', () => {
+    const { stdout, status } = run([...doc, 'css', 'nope.nothing']);
+    assert.match(stdout, /^error: Token 'nope\.nothing' not found/);
     assert.equal(status, 1);
   });
 
