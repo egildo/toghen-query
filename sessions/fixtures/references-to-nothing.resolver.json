@@ -1,0 +1,90 @@
+{
+  "version": "2025-11-01",
+  "name": "nothing",
+  "description": "A synthetic document whose only faults are references that do not resolve: a colour referring to no token, a shadow whose colour refers to no token, two tokens referring to each other, and an accent that refers to no token in the dark context only.",
+  "sets": {
+    "base": {
+      "sources": [
+        {
+          "color": {
+            "$type": "color",
+            "ink": {
+              "$value": {
+                "colorSpace": "srgb",
+                "components": [
+                  0.1,
+                  0.1,
+                  0.1
+                ]
+              }
+            },
+            "accent": {
+              "$value": "{color.ink}"
+            },
+            "text": {
+              "$value": "{color.missing}"
+            }
+          },
+          "loop": {
+            "$type": "color",
+            "a": {
+              "$value": "{loop.b}"
+            },
+            "b": {
+              "$value": "{loop.a}"
+            }
+          },
+          "shadow": {
+            "raised": {
+              "$type": "shadow",
+              "$value": {
+                "color": "{color.gone}",
+                "offsetX": {
+                  "value": 0,
+                  "unit": "px"
+                },
+                "offsetY": {
+                  "value": 1,
+                  "unit": "px"
+                },
+                "blur": {
+                  "value": 2,
+                  "unit": "px"
+                },
+                "spread": {
+                  "value": 0,
+                  "unit": "px"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "modifiers": {
+    "theme": {
+      "default": "light",
+      "contexts": {
+        "light": [],
+        "dark": [
+          {
+            "color": {
+              "accent": {
+                "$value": "{color.absent}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/base"
+    },
+    {
+      "$ref": "#/modifiers/theme"
+    }
+  ]
+}

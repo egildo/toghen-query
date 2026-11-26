@@ -13,6 +13,10 @@ holes:
 non-factorable:
   card.shadow $value: $value of "card.shadow" is overridden in part: an object merged onto the object beneath it differs from the incoming object alone.
 same-css-name: (none)
+unresolvable:
+  card.border in low/light: {color.missing} (not-found)
+  card.border in high/light: {color.missing} (not-found)
+  card.border in low/dark: {color.missing} (not-found)
 collisions: (none)
 — check, load
 

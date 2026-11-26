@@ -10,5 +10,6 @@ holes: (none)
 non-factorable: (none)
 same-css-name:
   --space-a-b: space.a.b, space.a-b
+unresolvable: (none)
 collisions: (none)
 — check, load

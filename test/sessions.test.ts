@@ -21,7 +21,7 @@ const files = readdirSync(SESSIONS)
 
 describe('the sessions', () => {
   it('there are sessions to replay', () => {
-    assert.ok(files.length >= 9, 'sessions/ holds the nine sessions the docs name');
+    assert.ok(files.length >= 10, 'sessions/ holds the ten sessions the docs name');
   });
 
   for (const name of files) {

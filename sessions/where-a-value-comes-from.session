@@ -41,7 +41,7 @@ color
 
 > css ds.button.backgroundColor
 --button-background-color
-— cssPropertyName
+— cssPropertyNameOf
 
 > css --surface-raised theme
 --surface-raised--theme
