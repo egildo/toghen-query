@@ -202,6 +202,20 @@ gained a `collisions` line and `load` in its last line, in `a-broken-document`, 
 - `--json` with `--session` is ignored.
 - A repeated pair: the last one wins.
 
+## Fixed and built: what the measurement of 25 November 2026 found (26 November 2026)
+
+**Status:** built; not released yet. Items 3 and 4 of the round, `css` through lib's new method and `check`'s `unresolvable`, wait for lib's release on npm.
+
+**Where it comes from.** On 25 November 2026 the `toghen` skills were measured against the released tools (skills' `decisions.md`, *Measured*). The round's plan is house's `.reference/plans/workspace/plan-2026-11-25-measurement-fixes.md`, ruled "1b 2a 3a 4a 5a" on 26 November 2026.
+
+**Fixed:**
+
+- **The usage says `--tokens` is given once for each file:** `--tokens <file> [--tokens <file> …]`, as the guide already said. Taking several files after one flag was not chosen: a file name and a command word cannot be told apart without guessing.
+- **`check` prints `same-css-name:`,** between `non-factorable:` and `collisions:`, and fails on it. The core lists those tokens as wrong, and query printed only the other lists; only `--json` showed it. The two sessions that ask `check` gained the line, and a session of its own holds a document where it is the only failing list.
+- **A read failure gives Node's reason without Node's copy of the path** (question 2a, which covers query's reader as figma's). lib's message already names the file.
+
+**What the build found.** The `[x …]` notation was chosen for the usage over parentheses, which the usage text uses nowhere else.
+
 ## Open questions
 
 - **Closed:** [a source may change mid-session](#built-a-map-a-source-mid-session-and-what-system-and-check-now-print-21-october-2026). Whether a session may carry more than one document. Today a session asks one, named in its header. A question that compares two documents would need two.
