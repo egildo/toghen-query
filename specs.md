@@ -45,7 +45,7 @@ A path goes to the core as typed. The core's one-collection shorthand reads a pa
 ## Loading
 
 - `--doc <file>`: the core's `load`, with a reader that reads files. File references are followed as the core follows them.
-- `--tokens <file>…`: bare token files, made absolute and handed to the core's `load` as a list. The core wraps them in a one-set resolver document. The collection is named after the folder that holds the files, as the core decides.
+- `--tokens <file> [--tokens <file> …]`: bare token files, the flag once for each file, made absolute and handed to the core's `load` as a list. A word after a file starts the query, because a file name and a command word cannot be told apart without guessing. The core wraps them in a one-set resolver document. The collection is named after the folder that holds the files, as the core decides.
 - `--overrides <file>`: a JSON file, parsed and handed to `load` as `options.overrides`. The package does nothing to its keys or values. The core resolves a relative value against the document that holds the reference.
 - `--build sum`: `resolveContextsToDesignSystem`. The default.
 - `--build product`: `resolveAllToDesignSystem`.

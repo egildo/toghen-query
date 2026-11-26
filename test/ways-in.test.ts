@@ -70,6 +70,12 @@ describe('the ways in', () => {
     assert.equal(stdout, '(whole value) -> example.surface.raised\n— referencesOf\n');
   });
 
+  it('--help: the usage, with --tokens given once for each file', () => {
+    const { stdout, status } = run(['--help']);
+    assert.equal(status, 0);
+    assert.match(stdout, /^usage: toghen-query \[--doc <resolver\.json> \| --tokens <file> \[--tokens <file> …\]\] /);
+  });
+
   it('--build: one context as a one-mode system', () => {
     const { stdout } = run(['--doc', `${EXAMPLE}ds.resolver.json`, '--build', 'theme=dark', 'value', 'surface.raised']);
     assert.equal(stdout, '{"colorSpace":"srgb","components":[0.1686,0.1686,0.1686],"hex":"#2b2b2b"}\n— resolveValue\n');

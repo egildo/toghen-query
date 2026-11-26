@@ -14,7 +14,7 @@ import { loadSource } from './load.js';
 import { ask, exitCodeOf, render } from './query.js';
 import { replay } from './session.js';
 
-const USAGE = `usage: toghen-query [--doc <resolver.json> | --tokens <file>…] [--overrides <map.json>] [--build sum|product|modifier=context,…] [--json] [<query> | --session <file>]
+const USAGE = `usage: toghen-query [--doc <resolver.json> | --tokens <file> [--tokens <file> …]] [--overrides <map.json>] [--build sum|product|modifier=context,…] [--json] [<query> | --session <file>]
        With no query and no session, a prompt reads one query per line. Type help for the commands.`;
 
 const OPTIONS = {
