@@ -221,6 +221,14 @@ gained a `collisions` line and `load` in its last line, in `a-broken-document`, 
 - **`css <path>` asks the core** (question 4a): `cssPropertyNameOf`, one export, with the one-collection shorthand every other form takes. `css surface.page` answers `--surface-page`, and a path that names no token gets lib's error and exits 1. Before, `css` called the pure `cssPropertyName`, which drops the first segment whatever it is.
 - **`check` prints `unresolvable:`** (question 5a), between `same-css-name:` and `collisions:`, one line per token and mode, `<path> in <mode>: <reference> (<reason>)`, and fails on it. `a-broken-document.session`'s answer gains `card.border`'s reference to nothing in three modes: the session called its `check` everything wrong with the document, and left that out. A new session, `references-to-nothing`, holds a colour and a shadow member that refer to nothing, a two-token loop and a reference broken in one context only.
 
+## Fixed: the usage after a document that does not load (26 November 2026)
+
+**Status:** done on the branch `leftovers`, for 0.1.3.
+
+**Where it comes from.** The skills were measured again on 26 November 2026 against 0.1.2 (skills' `decisions.md`, *Measured again*). The plan is house's `.reference/plans/workspace/plan-2026-11-26-leftovers.md`, ruled "1a 2a" the same day; neither question is this repository's.
+
+**Fixed:** a `--doc` that does not load printed the usage after lib's line, though the arguments were right. The last handler appended the usage to all it caught, and usage errors never reach it: `main` prints them with the usage, exit 1. What reaches it is a load that threw, or no source given, which names `--doc` already. Both now print `error: <message>` alone, and still exit 2. The specs say so.
+
 ## Open questions
 
 - **Closed:** [a source may change mid-session](#built-a-map-a-source-mid-session-and-what-system-and-check-now-print-21-october-2026). Whether a session may carry more than one document. Today a session asks one, named in its header. A question that compares two documents would need two.
