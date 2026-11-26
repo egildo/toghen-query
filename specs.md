@@ -26,7 +26,7 @@ Three forms read more than one export. Each says so in its last line.
 
 ### Exit codes
 
-A one-shot query exits 0 for an answer and 1 for anything else: the core threw (`error:`), the line was a usage error, or its word is no command. A command line the flags cannot be read from, a flag it does not know or one without its value, is a usage error too, and exits 1 with the usage. So is a query given with `--session`, which a session would not ask. `help` is answered as a usage and exits 0. A form may say that its answer is a failure, and two do. `check`: 1 when the collection's `check` lists any `incomplete`, `holes` or `nonFactorable` entry. `value … across`: 1 when the core threw for any mode, as a query the core threw for exits. Collisions print beside them and do not fail, because `load` reports them as advice, the last source still winning ([lib's reference](https://codeberg.org/Toghen/lib/src/branch/main/reference.md)). The prompt exits 0, whatever it answered. A session exits by whether its replay equals the file, and a load that throws exits 2.
+A one-shot query exits 0 for an answer and 1 for anything else: the core threw (`error:`), the line was a usage error, or its word is no command. A command line the flags cannot be read from, a flag it does not know or one without its value, is a usage error too, and exits 1 with the usage. So is a query given with `--session`, which a session would not ask. `help` is answered as a usage and exits 0. A form may say that its answer is a failure, and two do. `check`: 1 when the collection's `check` lists any `incomplete`, `holes`, `nonFactorable` or `sameCssName` entry. `value … across`: 1 when the core threw for any mode, as a query the core threw for exits. Collisions print beside them and do not fail, because `load` reports them as advice, the last source still winning ([lib's reference](https://codeberg.org/Toghen/lib/src/branch/main/reference.md)). The prompt exits 0, whatever it answered. A session exits by whether its replay equals the file, and a load that throws exits 2.
 
 This computes no semantics. The code reads the kind of answer `ask` already sorts every answer into, and, for `check`, whether the lists the core calls "what is wrong with the collection's tokens" are empty. A session holds no exit code, so the codes are held by `test/ways-in.test.ts`, which runs the command as a process.
 
@@ -44,8 +44,8 @@ A path goes to the core as typed. The core's one-collection shorthand reads a pa
 
 ## Loading
 
-- `--doc <file>`: the core's `load`, with a reader that reads files. File references are followed as the core follows them.
-- `--tokens <file>…`: bare token files, made absolute and handed to the core's `load` as a list. The core wraps them in a one-set resolver document. The collection is named after the folder that holds the files, as the core decides.
+- `--doc <file>`: the core's `load`, with a reader that reads files. File references are followed as the core follows them. A file the reader cannot read fails with Node's reason, without the path Node appends to it: the core's message names the file already.
+- `--tokens <file> [--tokens <file> …]`: bare token files, the flag once for each file, made absolute and handed to the core's `load` as a list. A word after a file starts the query, because a file name and a command word cannot be told apart without guessing. The core wraps them in a one-set resolver document. The collection is named after the folder that holds the files, as the core decides.
 - `--overrides <file>`: a JSON file, parsed and handed to `load` as `options.overrides`. The package does nothing to its keys or values. The core resolves a relative value against the document that holds the reference.
 - `--build sum`: `resolveContextsToDesignSystem`. The default.
 - `--build product`: `resolveAllToDesignSystem`.
@@ -97,6 +97,7 @@ Every answer ends with a line `— <export>`, the export the form called. A usag
 | `overrides hash` | `load(…).overrides.hash` |
 | `overrides unused` | `load(…).overrides.unused` |
 | `overridden`, one line per read | each entry of `load(…).reads` whose `overridden` is true: its `ref`, `holder` and `location` |
+| `same-css-name`, one line per name | each entry of `check().sameCssName`: its `name` and its `paths`, in document order |
 | `collisions`, one line per collision | each entry of `load(…).collisions`: its `path`, its `set` or `modifier` and `context`, its `files`, and `redundant` |
 
 The four map lines are printed only when a map was given, which is when `load` returns `overrides`.
@@ -123,6 +124,7 @@ A session is the spec, and its answers are the golden files.
 - The `defects` session asks the three behaviours the review called defects. It held the core's wrong answers until the fixes; the diff is the proof of each fix. The synthetic document it asks is in `sessions/fixtures/`.
 - The `a-broken-document` session asks a synthetic document with a reference to no token, a composite overridden in part and a token one context alone defines: the document-wide check, the error of the dangling reference, and the token one context defines, across every mode, with the core's error on the rows it throws for.
 - The `defects` session's fixture also has a token two sources of one set give a `$value`, so its `check` shows a collision.
+- The `same-css-name` session asks a synthetic document with two dimension tokens, `space.a.b` and `space.a-b`, whose paths give one custom-property name: its `check` lists the name and both paths.
 - The `strings` session asks a synthetic document whose descriptions hold a paragraph break, a line break, a first `#` or `>`, and nothing at all: each is printed as JSON, so the session still reads back.
 - The `overlay-and-map` session asks the running example three ways: the base, the overlay `ds.warm.resolver.json`, and the base read with `warm.overrides.json`. It is the one session that changes its source mid-way.
 

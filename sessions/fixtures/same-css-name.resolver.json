@@ -1,0 +1,36 @@
+{
+  "version": "2025-11-01",
+  "name": "same-css-name",
+  "description": "A synthetic document with two dimension tokens whose paths give one custom-property name: space.a.b and space.a-b.",
+  "sets": {
+    "base": {
+      "sources": [
+        {
+          "space": {
+            "a": {
+              "b": {
+                "$type": "dimension",
+                "$value": {
+                  "value": 4,
+                  "unit": "px"
+                }
+              }
+            },
+            "a-b": {
+              "$type": "dimension",
+              "$value": {
+                "value": 0.5,
+                "unit": "rem"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "resolutionOrder": [
+    {
+      "$ref": "#/sets/base"
+    }
+  ]
+}

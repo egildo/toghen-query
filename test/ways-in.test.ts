@@ -70,6 +70,12 @@ describe('the ways in', () => {
     assert.equal(stdout, '(whole value) -> example.surface.raised\n— referencesOf\n');
   });
 
+  it('--help: the usage, with --tokens given once for each file', () => {
+    const { stdout, status } = run(['--help']);
+    assert.equal(status, 0);
+    assert.match(stdout, /^usage: toghen-query \[--doc <resolver\.json> \| --tokens <file> \[--tokens <file> …\]\] /);
+  });
+
   it('--build: one context as a one-mode system', () => {
     const { stdout } = run(['--doc', `${EXAMPLE}ds.resolver.json`, '--build', 'theme=dark', 'value', 'surface.raised']);
     assert.equal(stdout, '{"colorSpace":"srgb","components":[0.1686,0.1686,0.1686],"hex":"#2b2b2b"}\n— resolveValue\n');
@@ -111,6 +117,12 @@ describe('the exit code of a one-shot query', () => {
   it('1 for a check whose collection check lists anything', () => {
     const { stdout, status } = run([...fixture('broken.resolver.json'), 'check']);
     assert.match(stdout, /^incomplete:\n {2}card\.glow/);
+    assert.equal(status, 1);
+  });
+
+  it('1 for a check that lists only two tokens with one custom-property name', () => {
+    const { stdout, status } = run([...fixture('same-css-name.resolver.json'), 'check']);
+    assert.match(stdout, /\nsame-css-name:\n {2}--space-a-b: space\.a\.b, space\.a-b\n/);
     assert.equal(status, 1);
   });
 
@@ -164,6 +176,13 @@ describe('the exit code of a one-shot query', () => {
     const { stdout, status } = run([...doc, 'help']);
     assert.match(stdout, /^value <path>/m);
     assert.equal(status, 0);
+  });
+
+  it('2 for a document that does not load, with the reason Node gives and not its copy of the path', () => {
+    const { stderr, status } = run(['--doc', `${SESSIONS}fixtures/missing.resolver.json`, 'check']);
+    assert.equal(status, 2);
+    assert.match(stderr, /could not be read\. ENOENT: no such file or directory\n/);
+    assert.doesNotMatch(stderr, /, open '/);
   });
 
   it('0 for the prompt, whatever it answered', () => {

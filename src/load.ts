@@ -29,7 +29,12 @@ export interface Loaded {
   folder: string;
 }
 
-const read = (location: string) => readFile(location, 'utf8');
+/** A file's text. Node's reason ends with the path (`…, open '<path>'`), which the core's message names already. */
+const read = (location: string) =>
+  readFile(location, 'utf8').catch((error: Error) => {
+    const reason = error.message.replace(/, open '.*'$/s, '');
+    throw reason === error.message ? error : new Error(reason);
+  });
 
 export async function loadSource({ doc, tokens, build = 'sum', overrides }: Source): Promise<Loaded> {
   const entry = doc ? resolve(doc) : tokens?.length ? tokens.map((file) => resolve(file)) : undefined;

@@ -295,8 +295,9 @@ export const commands: Command[] = [
         export: 'check, load',
         run: ({ collection, load }) => ({ ...collection.check(), collisions: load.collisions }),
         // The core's check lists what is wrong with the tokens; collisions are load's advisory report, and do not fail.
-        fails: ({ incomplete, holes, nonFactorable }) => incomplete.length + holes.length + nonFactorable.length > 0,
-        print: ({ incomplete, holes, nonFactorable, collisions }, { folder }) => [
+        fails: ({ incomplete, holes, nonFactorable, sameCssName }) =>
+          incomplete.length + holes.length + nonFactorable.length + sameCssName.length > 0,
+        print: ({ incomplete, holes, nonFactorable, sameCssName, collisions }, { folder }) => [
           `incomplete: ${incomplete.length ? '' : '(none)'}`.trimEnd(),
           ...incomplete.map((t: any) => `  ${t.path}: no value in ${t.missingModes.join(', ')}`),
           `holes: ${holes.length ? '' : '(none)'}`.trimEnd(),
@@ -312,6 +313,8 @@ export const commands: Command[] = [
           ),
           `non-factorable: ${nonFactorable.length ? '' : '(none)'}`.trimEnd(),
           ...nonFactorable.map((n: any) => `  ${n.path} ${n.property}: ${n.detail}`),
+          `same-css-name: ${sameCssName.length ? '' : '(none)'}`.trimEnd(),
+          ...sameCssName.map((s: any) => `  ${s.name}: ${s.paths.join(', ')}`),
           `collisions: ${collisions.length ? '' : '(none)'}`.trimEnd(),
           ...collisions.map(
             (c: any) =>
