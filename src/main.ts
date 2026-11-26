@@ -94,8 +94,9 @@ async function prompt(print: (line: string) => unknown): Promise<void> {
 
 main().then(
   (code) => process.exit(code),
+  // What reaches here is a load that threw, or no source given, never a usage error: the arguments were read, so no usage.
   (error) => {
-    console.error(`error: ${error instanceof Error ? error.message : error}\n${USAGE}`);
+    console.error(`error: ${error instanceof Error ? error.message : error}`);
     process.exit(2);
   },
 );
